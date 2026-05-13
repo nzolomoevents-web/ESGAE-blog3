@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESGAE Blog – Accueil</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="esgae-logo">
+          <span class="letter-e">E</span><span class="letter-s">S</span><span class="letter-g">G</span><span class="letter-a">A</span><span class="letter-e2">E</span>
+        </span>
+        <span class="blog-text">Blog</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto ms-3">
+          <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-house me-1"></i>Accueil</a></li>
+          <li class="nav-item"><a class="nav-link" href="categorie.html"><i class="bi bi-grid me-1"></i>Catégories</a></li>
+          <li class="nav-item"><a class="nav-link" href="A-PROPOS.html"><i class="bi bi-people me-1"></i>À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacts.html"><i class="bi bi-envelope me-1"></i>Contact</a></li>
+        </ul>
+        <input class="search-input" type="text" placeholder="🔍 Rechercher un article…" id="searchInput" oninput="filterArticles()"/>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME VIEW -->
+  <div id="homeView">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="container">
+        <span class="hero-badge"><i class="bi bi-star-fill me-1"></i>Blog de Passions & Réflexions</span>
+        <h1 class="mt-3">Bienvenue sur
+          <span class="esgae-title">
+            <span class="letter-e">E</span><span class="letter-s">S</span><span class="letter-g">G</span><span class="letter-a">A</span><span class="letter-e2">E</span>
+            <span class="green-line"></span>
+          </span> Blog
+        </h1>
+        <p>Des articles sur la technologie, la réalité, la science et la créativité — écrits avec passion.</p>
+        <a href="#articles" class="btn btn-light fw-bold px-4 py-2" style="border-radius:25px;color:var(--accent)">
+          <i class="bi bi-arrow-down-circle me-1"></i> Découvrir les articles
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN SECTION -->
+    <section class="main-section">
+      <div class="container">
+
+        <!-- ARTICLE À LA UNE -->
+        <h2 class="mb-4" style="font-weight:800">⭐ Article à la Une</h2>
+        <div class="featured-card mb-5" style="cursor:pointer" onclick="openArticle(0)">
+          <img src="images/IA.jpg" alt="IA"/>
+          <div class="featured-body">
+            <div class="featured-label"><i class="bi bi-cpu me-1"></i>Technologie</div>
+            <h2 class="featured-title">L'Intelligence Artificielle va-t-elle redéfinir notre humanité ?</h2>
+            <p class="featured-excerpt">L'Intelligence Artificielle n'est plus une promesse lointaine. Elle est déjà là, discrète mais omniprésente, transformant notre quotidien à une vitesse vertigineuse...</p>
+            <blockquote class="blockquote border-start border-4 ps-3 my-3">
+              <p class="mb-0 fst-italic">« Ce qui nous distingue n'est pas la capacité à calculer, mais la capacité à nous demander pourquoi nous calculons. »</p>
+            </blockquote>
+            <div class="d-flex align-items-center gap-3 mt-2">
+              <span class="card-meta"><i class="bi bi-calendar3 me-1"></i>3 mai 2025</span>
+              <span class="card-meta"><i class="bi bi-clock me-1"></i>8 min de lecture</span>
+            </div>
+            <button class="read-btn mt-3">Lire l'article <i class="bi bi-arrow-right ms-1"></i></button>
+          </div>
+        </div>
+
+        <!-- FILTRES -->
+        <div id="categories-section" class="mb-4">
+          <h5 class="fw-bold mb-3 text-center">Parcourir par catégorie</h5>
+          <div class="d-flex flex-wrap gap-2 justify-content-center" id="catFilters">
+            <span class="cat-pill active" onclick="filterCat('Tous', this)">Tous</span>
+            <span class="cat-pill" onclick="filterCat('Technologie', this)"><i class="bi bi-cpu me-1"></i>Technologie</span>
+            <span class="cat-pill" onclick="filterCat('réalité', this)"><i class="bi bi-lightbulb me-1"></i>Réalité</span>
+            <span class="cat-pill" onclick="filterCat('Science', this)"><i class="bi bi-rocket me-1"></i>Science</span>
+            <span class="cat-pill" onclick="filterCat('Société', this)"><i class="bi bi-palette me-1"></i>Société</span>
+            <span class="cat-pill" onclick="filterCat('Dévélopement', this)"><i class="bi bi-heart me-1"></i>Développement</span>
+          </div>
+        </div>
+
+        <!-- GRILLE + SIDEBAR -->
+        <div class="row g-4" id="articles">
+          <div class="col-lg-8">
+            <div id="articlesGrid"></div>
+            <div class="text-center mt-4">
+              <button class="btn" style="border:2px solid var(--accent);color:var(--accent);border-radius:25px;font-weight:600;padding:9px 30px">
+                <i class="bi bi-arrow-repeat me-1"></i> Charger plus d'articles
+              </button>
+            </div>
+          </div>
+
+          <!-- SIDEBAR -->
+          <div class="col-lg-4">
+            <!-- À propos -->
+           
+
+            <!-- Articles populaires -->
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-fire me-1"></i>Articles Populaires</div>
+              <div class="pop-article" onclick="openArticle(0)">
+                <img src="images/tech.jpg" alt=""/>
+                <div>
+                  <div class="pop-article-title">L'IA va-t-elle redéfinir notre humanité ?</div>
+                  <div class="pop-article-date">3 mai 2025</div>
+                </div>
+              </div>
+              <div class="pop-article" onclick="openArticle(2)">
+                <img src="images/science.jpg" alt=""/>
+                <div>
+                  <div class="pop-article-title">La Science en Afrique et dans le monde</div>
+                  <div class="pop-article-date">18 avr. 2025</div>
+                </div>
+              </div>
+              <div class="pop-article" onclick="openArticle(8)">
+                <img src="images/religion.jpg" alt=""/>
+                <div>
+                  <div class="pop-article-title">La religion au Congo</div>
+                  <div class="pop-article-date">12 avr. 2025</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-tags me-1"></i>Tags Populaires</div>
+              <div>
+                <a href="#articles" class="tag" onclick="filterTag('IA')">#IA</a>
+                <a href="#articles" class="tag" onclick="filterTag('Religion')">#Religion</a>
+                <a href="#articles" class="tag" onclick="filterTag('Conscience')">#Conscience</a>
+                <a href="#articles" class="tag" onclick="filterTag('Créativité')">#Créativité</a>
+                <a href="#articles" class="tag" onclick="filterTag('brazzaville')">#Brazzaville</a>
+                <a href="#articles" class="tag" onclick="filterTag('Futur')">#Futur</a>
+                <a href="#articles" class="tag" onclick="filterTag('Étudiants')">#Étudiants</a>
+                <a href="#articles" class="tag" onclick="filterTag('Prière')">#Prière</a>
+                <a href="#articles" class="tag" onclick="filterTag('métier')">#Métier</a>
+                <a href="#articles" class="tag" onclick="filterTag('Mindset')">#Mindset</a>
+                <a href="#articles" class="tag" onclick="filterTag('confience')">#Confiance</a>
+                <a href="#articles" class="tag" onclick="filterTag('Science')">#Science</a>
+              </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="sidebar-box" style="background:linear-gradient(135deg,var(--accent),#a78bfa);color:#fff">
+              <h6 class="fw-bold mb-1" style="color:#fff"><i class="bi bi-envelope-heart me-1"></i>Newsletter</h6>
+              <p style="font-size:.82rem;opacity:.9;margin-bottom:.8rem">Recevez les nouveaux articles directement dans votre boîte mail.</p>
+              <input type="email" placeholder="votre@email.com" style="width:100%;border:none;border-radius:20px;padding:7px 14px;font-size:.85rem;margin-bottom:.5rem;outline:none"/>
+              <button style="width:100%;background:#fff;color:var(--accent);border:none;border-radius:20px;padding:7px;font-weight:700;cursor:pointer;font-size:.88rem">S'abonner</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ARTICLE VIEW -->
+  <div id="articleView" class="article-view">
+    <section class="main-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <button class="back-btn" onclick="showHome()"><i class="bi bi-arrow-left me-1"></i> Retour aux articles</button>
+            <div id="articleContent"></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-tags me-1"></i>Tags</div>
+              <div id="articleTags"></div>
+            </div>
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-collection me-1"></i>Autres Articles</div>
+              <div id="relatedArticles"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="footer-brand mb-2">
+            <span class="esgae-logo" style="font-size:20px;">
+              <span class="letter-e">E</span><span class="letter-s">S</span><span class="letter-g">G</span><span class="letter-a">A</span><span class="letter-e2">E</span>
+            </span>
+            <span style="color:#fff;font-size:16px;margin-left:6px;">Blog</span>
+          </div>
+          <p style="font-size:.85rem;line-height:1.6">Un espace de réflexion sur la technologie, la philosophie et tout ce qui fait la richesse de notre époque.</p>
+          <div class="mt-2">
+            <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <h6>Navigation</h6>
+          <a href="index.html">Accueil</a>
+          <a href="categorie.html">Catégories</a>
+          <a href="A-PROPOS.html">À propos</a>
+          <a href="contacts.html">Contact</a>
+        </div>
+        <div class="col-md-3">
+          <h6>Catégories</h6>
+          <a href="categorie.html">Technologie</a>
+          <a href="categorie.html">Réalité</a>
+          <a href="categorie.html">Science</a>
+          <a href="categorie.html">Société</a>
+          <a href="categorie.html">Développement</a>
+        </div>
+        <div class="col-md-3">
+          <h6>Contact</h6>
+          <p style="font-size:.85rem"><i class="bi bi-envelope me-1" style="color:var(--accent)"></i>Esgae.org</p>
+          <p style="font-size:.85rem"><i class="bi bi-geo-alt me-1" style="color:var(--accent)"></i>Brazzaville, CONGO</p>
+        </div>
+      </div>
+      <div class="footer-bottom">Sous la supervision de M. EBOMY WANDA Davy</div>
+    </div>
+  </footer>
+<script>
+   const ARTICLES = [
+      { id:0, cat:"Technologie", title:"L'Intelligence Artificielle et l'informatique : va-t-elle remplacer les informaticiens et d'autres métiers ?", excerpt:"L'IA progresse rapidement dans le monde informatique. Mais va-t-elle remplacer les développeurs, les ingénieurs et d'autres professions ?", img:"images/tech.jpg", date:"3 mai 2025", read:"8 min", tags:["#IA","#Futur","#métier"], video:"https://www.youtube.com/embed/aircAruvnKk",
+        body:`<p>L'intelligence artificielle s'impose aujourd'hui comme une révolution majeure dans le domaine de l'informatique...</p><h3>Une IA construite par l'informatique</h3><p>L'IA repose entièrement sur l'informatique : algorithmes, langages de programmation, bases de données et puissance de calcul. Les informaticiens sont à l'origine même de cette technologie.</p><blockquote>"L'IA ne remplace pas l'informatique, elle en est une extension avancée." — expert en technologie</blockquote><h3>L'IA peut-elle remplacer les informaticiens ?</h3><p>L'IA peut générer du code et corriger des erreurs, mais remplacer totalement les informaticiens reste très loin de la réalité. Elle ne comprend pas vraiment les besoins humains.</p><h3>Vers une transformation plutôt qu'un remplacement</h3><p>L'IA transforme les métiers plutôt qu'elle ne les supprime. De nouveaux rôles émergent : ingénieur en IA, analyste de données, spécialiste en éthique numérique.</p><h3>Conclusion</h3><p>L'avenir ne sera pas une opposition entre l'homme et la machine, mais une collaboration entre les deux.</p>`},
+      { id:1, cat:"réalité", title:"Les clichés sur l'informatique dans la société congolaise", excerpt:"Derrière les préjugés sur l'informatique au Congo se cache une réalité numérique en pleine transformation.", img:"images/cliche-informatique.png", date:"25 avr. 2025", read:"6 min", tags:["#réalité","#brazzaville"],
+        body:`<p>Dans beaucoup de familles au Congo, lorsqu'un jeune annonce qu'il étudie l'informatique, les réactions sont souvent : « Ah donc tu vas réparer les téléphones ? »</p><h3>Une vision héritée d'une autre époque</h3><p>Au Congo, l'informatique n'a pas évolué au même rythme que dans d'autres pays. Pendant longtemps, les cybercafés représentaient le principal accès à Internet.</p><h3>Les jeunes Congolais changent les mentalités</h3><p>Malgré les difficultés — manque de matériel, connexion coûteuse — de nombreux jeunes apprennent le développement web, la programmation, le design et la cybersécurité.</p><blockquote>"Tu as pouvoir sur ton esprit, pas sur les événements extérieurs." — Marc Aurèle</blockquote>`},
+      { id:2, cat:"Science", title:"La Science en Afrique et dans le monde : entre héritage, défis et révolution", excerpt:"La science façonne le monde moderne, mais son développement reste inégal entre l'Afrique et les grandes puissances scientifiques.", img:"images/science.jpg", date:"18 avr. 2025", read:"9 min", tags:["#Conscience","#Science"], video:"https://www.youtube.com/embed/lyu7v7nWzfo",
+        body:`<p>La science est aujourd'hui l'un des moteurs les plus puissants du développement humain.</p><h3>La science dans le monde</h3><p>À l'échelle mondiale, la science est dominée par quelques pôles majeurs : les États-Unis, la Chine, le Japon et l'Europe.</p><h3>La science en Afrique</h3><p>L'Afrique possède un potentiel scientifique énorme, mais encore sous-exploité. Manque de financement, fuite des cerveaux, infrastructures limitées.</p><h3>Vers une science plus inclusive</h3><p>Des partenariats internationaux permettent de renforcer la présence de l'Afrique dans la communauté scientifique mondiale.</p>`},
+      { id:3, cat:"Dévélopement", title:"La confiance en soi chez les étudiants : ce combat silencieux que beaucoup cachent", excerpt:"Derrière les sourires, nombreux sont les étudiants qui doutent d'eux-mêmes. La confiance se construit, elle ne se donne pas.", img:"images/confience.png", date:"10 avr. 2025", read:"5 min", tags:["#confience","#Mindset"],
+        body:`<p>Dans les universités au Congo, beaucoup d'étudiants vivent une bataille silencieuse : le manque de confiance en soi.</p><h3>La pression de réussir</h3><p>Certaines familles attendent de bonnes notes, un diplôme rapide, un travail stable. Cette pression peut devenir très lourde.</p><h3>Les réseaux sociaux aggravent parfois les choses</h3><p>Les réseaux sociaux montrent rarement les échecs, les nuits difficiles et les doutes.</p><h3>La confiance en soi se construit</h3><p>Elle se développe quand on apprend chaque jour, quand on ose essayer et quand on cesse de se comparer aux autres.</p>`},
+      { id:8, cat:"Société", title:"La religion au Congo : entre traditions, christianisme et vie étudiante", excerpt:"Au Congo, la religion influence profondément la société, notamment les étudiants pour qui la prière devient un repère.", img:"images/religion.jpg", date:"12 avr. 2025", read:"12 min", tags:["#Congo","#Religion","#Étudiants","#Prière"],
+        body:`<p>Au Congo, la religion est bien plus qu'une simple croyance : elle est une réalité sociale, culturelle et émotionnelle.</p><h3>Un christianisme dominant et très influent</h3><p>La République du Congo est majoritairement chrétienne, avec une forte présence du catholicisme, des Églises protestantes et des mouvements évangéliques.</p><h3>Les étudiants et la prière</h3><p>Face aux défis académiques, beaucoup d'étudiants se tournent vers la prière comme soutien moral et spirituel.</p><h3>Conclusion</h3><p>La religion reste un pilier essentiel de la société congolaise, un espace d'espoir et de résilience.</p>`}
+    ];
+
+    let currentCat = "Tous";
+
+    function renderCards(list) {
+      const grid = document.getElementById("articlesGrid");
+      grid.innerHTML = list.length === 0
+        ? `<div class="col-12 text-center text-muted py-5"><i class="bi bi-search fs-1 d-block mb-2"></i>Aucun article trouvé.</div>`
+        : list.map(a => `
+          <div class="blog-card" style="cursor:pointer" onclick="openArticle(${a.id})">
+            <img src="${a.img}" alt="${a.title}"/>
+            <div class="card-body">
+              <div class="card-category"><i class="bi bi-tag me-1"></i>${a.cat}</div>
+              <div class="card-title">${a.title}</div>
+              <div class="card-excerpt">${a.excerpt}</div>
+              <div class="d-flex flex-wrap mt-2">${a.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+              <div class="card-meta mt-2"><i class="bi bi-calendar3 me-1"></i>${a.date}<span class="ms-3"><i class="bi bi-clock me-1"></i>${a.read}</span></div>
+              <button class="read-btn">Lire <i class="bi bi-arrow-right ms-1"></i></button>
+            </div>
+          </div>`).join('');
+    }
+
+    function filterCat(cat, el) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      applyFilters();
+    }
+
+    function filterArticles() { applyFilters(); }
+
+    function applyFilters() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      let list = ARTICLES;
+      if (currentCat !== "Tous") list = list.filter(a => a.cat === currentCat);
+      if (q) list = list.filter(a => a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q) || a.tags.join(' ').toLowerCase().includes(q));
+      renderCards(list);
+    }
+
+    function openArticle(id) {
+      const a = ARTICLES.find(x => x.id === id);
+      if (!a) return;
+      const vid = a.video ? `<h3>📽 Vidéo associée</h3><div class="video-wrap"><iframe src="${a.video}" allowfullscreen loading="lazy"></iframe></div>` : '';
+      document.getElementById("articleContent").innerHTML = `
+        <img class="article-hero" src="${a.img}" alt="${a.title}"/>
+        <div class="article-category mb-2" style="color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em"><i class="bi bi-tag me-1"></i>${a.cat}</div>
+        <h1 class="article-title">${a.title}</h1>
+        <div class="article-meta"><i class="bi bi-calendar3 me-1"></i>${a.date} &nbsp;•&nbsp; <i class="bi bi-clock me-1"></i>${a.read} de lecture</div>
+        <div class="article-body">${a.body}${vid}<p style="margin-top:1.5rem">Merci d'avoir lu cet article. Si ces réflexions vous ont touché, n'hésitez pas à le partager.</p></div>`;
+      document.getElementById("articleTags").innerHTML = a.tags.map(t=>`<span class="tag me-1">${t}</span>`).join('');
+      const related = ARTICLES.filter(x => x.id !== id).slice(0, 3);
+      document.getElementById("relatedArticles").innerHTML = related.map(r=>`<div class="pop-article" onclick="openArticle(${r.id})" style="cursor:pointer"><img src="${r.img}" alt=""/><div><div class="pop-article-title">${r.title}</div><div class="pop-article-date">${r.date}</div></div></div>`).join('');
+      document.getElementById("homeView").style.display = "none";
+      document.getElementById("articleView").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showHome() {
+      document.getElementById("homeView").style.display = "block";
+      document.getElementById("articleView").style.display = "none";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterTag(tagName) {
+      const filtered = ARTICLES.filter(a => a.tags.some(t => t.toLowerCase().includes(tagName.toLowerCase())));
+      renderCards(filtered);
+      showHome();
+      setTimeout(() => document.getElementById("articles").scrollIntoView({ behavior: "smooth" }), 100);
+    }
+
+    renderCards(ARTICLES);
+</script>
+ 
+  
+</body>
+</html>

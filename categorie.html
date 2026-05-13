@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESGAE Blog – Catégories</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --accent: #6c63ff;
+      --accent-dark: #574fd6;
+      --light-bg: #f8f7ff;
+      --card-shadow: 0 4px 20px rgba(108,99,255,.10);
+      --tag-bg: #ede9ff;
+      --tag-color: #6c63ff;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--light-bg); color: #2d2d2d; margin: 0; }
+
+    /* NAVBAR */
+    .navbar { background: #fff; border-bottom: 2px solid var(--accent); box-shadow: 0 2px 12px rgba(108,99,255,.08); }
+    .navbar-brand { font-weight: 800; font-size: 1.4rem; color: var(--accent) !important; }
+    .nav-link { color: #555 !important; font-weight: 500; transition: color .2s; }
+    .nav-link:hover, .nav-link.active { color: var(--accent) !important; }
+    .search-input { border: 2px solid #e0dcff; border-radius: 20px; padding: 5px 15px; font-size: .9rem; outline: none; transition: border .2s; }
+    .search-input:focus { border-color: var(--accent); }
+
+    /* LOGO */
+    .esgae-logo { font-weight: bold; font-size: 26px; font-family: Arial, sans-serif; position: relative; display: inline-block; line-height: 1; letter-spacing: 1px; }
+    .esgae-logo::after { content: ""; position: absolute; left: 0; bottom: 2px; width: 100%; height: 4px; background-color: #008000; }
+    .letter-e  { color: #008000 !important; }
+    .letter-s, .letter-g { color: #FFD700 !important; }
+    .letter-a, .letter-e2 { color: #FF0000 !important; }
+
+    /* HERO */
+    .page-hero { background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%); color: #fff; padding: 60px 0 50px; text-align: center; }
+    .page-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: .5rem; }
+    .page-hero p { font-size: 1.1rem; opacity: .9; max-width: 550px; margin: 0 auto; }
+
+    /* CAT SECTION */
+    .cat-header { border-radius: 16px; padding: 1.5rem 1.8rem; color: #fff; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .cat-header .cat-icon { font-size: 2rem; }
+    .cat-header h3 { font-size: 1.4rem; font-weight: 800; margin: 0 0 .2rem; }
+    .cat-header p { font-size: .88rem; opacity: .9; margin: 0; }
+    .cat-count { background: rgba(255,255,255,.25); border-radius: 20px; padding: 3px 12px; font-size: .8rem; font-weight: 700; display: inline-block; margin-top: .3rem; }
+
+    /* COLORS per category */
+    .cat-tech   { background: linear-gradient(135deg, #6c63ff, #a78bfa); }
+    .cat-real   { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+    .cat-sci    { background: linear-gradient(135deg, #10b981, #34d399); }
+    .cat-soc    { background: linear-gradient(135deg, #ef4444, #f87171); }
+    .cat-dev    { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+
+    /* CARDS */
+    .blog-card { background: #fff; border-radius: 16px; box-shadow: var(--card-shadow); transition: transform .25s, box-shadow .25s; overflow: hidden; height: 100%; cursor: pointer; }
+    .blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(108,99,255,.18); }
+    .blog-card img { width: 100%; height: 180px; object-fit: cover; }
+    .card-body { padding: 1.1rem; }
+    .card-category { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+    .card-title { font-size: 1rem; font-weight: 700; margin: .4rem 0 .4rem; line-height: 1.35; }
+    .card-excerpt { font-size: .85rem; color: #666; line-height: 1.5; }
+    .card-meta { font-size: .75rem; color: #aaa; margin-top: .7rem; }
+    .card-meta i { color: var(--accent); }
+    .tag { background: var(--tag-bg); color: var(--tag-color); font-size: .70rem; font-weight: 600; padding: 2px 10px; border-radius: 12px; display: inline-block; margin: 2px; text-decoration: none; }
+    .read-btn { background: var(--accent); color: #fff; border: none; border-radius: 20px; padding: 5px 18px; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .2s; margin-top: .6rem; }
+    .read-btn:hover { background: var(--accent-dark); }
+
+    /* ARTICLE VIEW */
+    .article-view { display: none; }
+    .article-hero { width: 100%; height: 340px; object-fit: cover; border-radius: 16px; margin-bottom: 2rem; }
+    .article-title { font-size: 2rem; font-weight: 800; line-height: 1.25; margin-bottom: .7rem; }
+    .article-meta { font-size: .85rem; color: #888; margin-bottom: 1.5rem; }
+    .article-body p { font-size: 1rem; line-height: 1.85; color: #3a3a3a; margin-bottom: 1.2rem; }
+    .article-body h3 { font-size: 1.25rem; font-weight: 700; color: var(--accent-dark); margin: 2rem 0 .7rem; }
+    .article-body blockquote { border-left: 4px solid var(--accent); background: var(--tag-bg); padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; font-style: italic; color: #555; margin: 1.5rem 0; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; border-radius: 12px; overflow: hidden; margin: 1.5rem 0; }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .back-btn { background: #fff; border: 2px solid var(--accent); color: var(--accent); border-radius: 20px; padding: 7px 22px; font-weight: 600; font-size: .88rem; cursor: pointer; transition: all .2s; margin-bottom: 1.5rem; }
+    .back-btn:hover { background: var(--accent); color: #fff; }
+    .sidebar-box { background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 1.3rem; margin-bottom: 1.4rem; }
+    .sidebar-title { font-size: .9rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); border-bottom: 2px solid var(--tag-bg); padding-bottom: .5rem; margin-bottom: 1rem; }
+    .pop-article { display: flex; gap: .8rem; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #f0eeff; cursor: pointer; }
+    .pop-article:last-child { border: none; }
+    .pop-article img { width: 60px; height: 50px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .pop-article-title { font-size: .82rem; font-weight: 600; color: #333; line-height: 1.3; }
+    .pop-article-date { font-size: .72rem; color: #aaa; }
+
+    /* CAT PILLS */
+    .cat-pill { display: inline-block; padding: 5px 16px; border-radius: 20px; font-size: .82rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all .2s; background: #fff; color: #555; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .cat-pill:hover, .cat-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* FOOTER */
+    footer { background: #2d2d2d; color: #bbb; padding: 2.5rem 0 1.5rem; margin-top: 4rem; }
+    footer h6 { color: #fff; font-weight: 700; }
+    footer a { color: #aaa; text-decoration: none; font-size: .88rem; display: block; margin-bottom: 5px; transition: color .2s; }
+    footer a:hover { color: var(--accent); }
+    .footer-bottom { border-top: 1px solid #444; margin-top: 1.5rem; padding-top: 1rem; font-size: .8rem; text-align: center; color: #777; }
+    .social-icon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.1); color: #fff; font-size: 1rem; margin-right: 6px; transition: background .2s; text-decoration: none; }
+    .social-icon:hover { background: var(--accent); color: #fff; }
+
+    section.main-section { padding: 50px 0; }
+
+    @media(max-width:768px) {
+      .page-hero h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="Accueil.html">
+        <span class="esgae-logo">
+          <span class="letter-e">E</span><span class="letter-s">S</span><span class="letter-g">G</span><span class="letter-a">A</span><span class="letter-e2">E</span>
+        </span>
+        <span style="color:#2d2d2d;font-size:18px;margin-left:6px;">Blog</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto ms-3">
+          <li class="nav-item"><a class="nav-link" href="Accueil.html"><i class="bi bi-house me-1"></i>Accueil</a></li>
+          <li class="nav-item"><a class="nav-link active" href="categorie.html"><i class="bi bi-grid me-1"></i>Catégories</a></li>
+          <li class="nav-item"><a class="nav-link" href="A-PROPOS.html"><i class="bi bi-people me-1"></i>À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacts.html"><i class="bi bi-envelope me-1"></i>Contact</a></li>
+        </ul>
+        <input class="search-input" type="text" placeholder="🔍 Rechercher un article…" id="searchInput" oninput="doSearch()"/>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="container">
+      <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:4px 16px;font-size:.85rem;display:inline-block;"><i class="bi bi-grid-fill me-1"></i>Tous les sujets</span>
+      <h1 class="mt-3">Nos Catégories</h1>
+      <p>Explorez nos articles classés par thème. Choisissez celui qui vous inspire.</p>
+    </div>
+  </div>
+
+  <!-- HOME VIEW -->
+  <div id="homeView">
+    <section class="main-section">
+      <div class="container">
+
+        <!-- FILTRE RAPIDE -->
+        <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
+          <span class="cat-pill active" onclick="showAll(this)">Tous</span>
+          <span class="cat-pill" onclick="scrollToCat('tech', this)"><i class="bi bi-cpu me-1"></i>Technologie</span>
+          <span class="cat-pill" onclick="scrollToCat('real', this)"><i class="bi bi-lightbulb me-1"></i>Réalité</span>
+          <span class="cat-pill" onclick="scrollToCat('sci', this)"><i class="bi bi-rocket me-1"></i>Science</span>
+          <span class="cat-pill" onclick="scrollToCat('soc', this)"><i class="bi bi-globe me-1"></i>Société</span>
+          <span class="cat-pill" onclick="scrollToCat('dev', this)"><i class="bi bi-heart me-1"></i>Développement</span>
+        </div>
+
+        <!-- TECHNOLOGIE -->
+        <div id="sec-tech" class="mb-5">
+          <div class="cat-header cat-tech">
+            <div class="cat-icon">💻</div>
+            <div>
+              <h3>Technologie</h3>
+              <p>IA, numérique, informatique — les grandes transformations de notre siècle.</p>
+              <span class="cat-count">1 article</span>
+            </div>
+          </div>
+          <div class="row g-3" id="grid-tech"></div>
+        </div>
+
+        <!-- RÉALITÉ -->
+        <div id="sec-real" class="mb-5">
+          <div class="cat-header cat-real">
+            <div class="cat-icon">🔍</div>
+            <div>
+              <h3>Réalité</h3>
+              <p>Clichés, perceptions et vérités sur la société congolaise et africaine.</p>
+              <span class="cat-count">1 article</span>
+            </div>
+          </div>
+          <div class="row g-3" id="grid-real"></div>
+        </div>
+
+        <!-- SCIENCE -->
+        <div id="sec-sci" class="mb-5">
+          <div class="cat-header cat-sci">
+            <div class="cat-icon">🔬</div>
+            <div>
+              <h3>Science</h3>
+              <p>Découvertes, innovations et enjeux scientifiques en Afrique et dans le monde.</p>
+              <span class="cat-count">1 article</span>
+            </div>
+          </div>
+          <div class="row g-3" id="grid-sci"></div>
+        </div>
+
+        <!-- SOCIÉTÉ -->
+        <div id="sec-soc" class="mb-5">
+          <div class="cat-header cat-soc">
+            <div class="cat-icon">🌍</div>
+            <div>
+              <h3>Société</h3>
+              <p>Religion, culture, tradition — les grandes forces qui façonnent notre société.</p>
+              <span class="cat-count">1 article</span>
+            </div>
+          </div>
+          <div class="row g-3" id="grid-soc"></div>
+        </div>
+
+        <!-- DÉVELOPPEMENT -->
+        <div id="sec-dev" class="mb-5">
+          <div class="cat-header" style="background:linear-gradient(135deg,#3b82f6,#60a5fa);">
+            <div class="cat-icon">🚀</div>
+            <div>
+              <h3>Développement Personnel</h3>
+              <p>Confiance, mindset et épanouissement pour les étudiants et jeunes professionnels.</p>
+              <span class="cat-count">1 article</span>
+            </div>
+          </div>
+          <div class="row g-3" id="grid-dev"></div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ARTICLE VIEW -->
+  <div id="articleView" class="article-view">
+    <section class="main-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <button class="back-btn" onclick="showCategories()"><i class="bi bi-arrow-left me-1"></i> Retour aux catégories</button>
+            <div id="articleContent"></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-tags me-1"></i>Tags</div>
+              <div id="articleTags"></div>
+            </div>
+            <div class="sidebar-box">
+              <div class="sidebar-title"><i class="bi bi-collection me-1"></i>Autres Articles</div>
+              <div id="relatedArticles"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div style="font-size:1.3rem;font-weight:800;color:var(--accent);margin-bottom:.5rem;">
+            <span class="esgae-logo" style="font-size:20px;">
+              <span class="letter-e">E</span><span class="letter-s">S</span><span class="letter-g">G</span><span class="letter-a">A</span><span class="letter-e2">E</span>
+            </span>
+            <span style="color:#fff;font-size:16px;margin-left:6px;">Blog</span>
+          </div>
+          <p style="font-size:.85rem;line-height:1.6">Un espace de réflexion sur la technologie, la philosophie et tout ce qui fait la richesse de notre époque.</p>
+          <div class="mt-2">
+            <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <h6>Navigation</h6>
+          <a href="Accueil.html">Accueil</a>
+          <a href="categorie.html">Catégories</a>
+          <a href="A-PROPOS.html">À propos</a>
+          <a href="contacts.html">Contact</a>
+        </div>
+        <div class="col-md-3">
+          <h6>Catégories</h6>
+          <a href="#" onclick="scrollToCat('tech')">Technologie</a>
+          <a href="#" onclick="scrollToCat('real')">Réalité</a>
+          <a href="#" onclick="scrollToCat('sci')">Science</a>
+          <a href="#" onclick="scrollToCat('soc')">Société</a>
+          <a href="#" onclick="scrollToCat('dev')">Développement</a>
+        </div>
+        <div class="col-md-3">
+          <h6>Contact</h6>
+          <p style="font-size:.85rem"><i class="bi bi-envelope me-1" style="color:var(--accent)"></i>Esgae.org</p>
+          <p style="font-size:.85rem"><i class="bi bi-geo-alt me-1" style="color:var(--accent)"></i>Brazzaville, CONGO</p>
+        </div>
+      </div>
+      <div class="footer-bottom">Sous la supervision de M. EBOMY WANDA Davy</div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const ARTICLES = [
+      { id:0, cat:"Technologie", title:"L'Intelligence Artificielle et l'informatique : va-t-elle remplacer les informaticiens ?", excerpt:"L'IA progresse rapidement. Mais va-t-elle remplacer les développeurs et ingénieurs ?", img:"images/tech.jpg", date:"3 mai 2025", read:"8 min", tags:["#IA","#Futur","#métier"], video:"https://www.youtube.com/embed/aircAruvnKk",
+        body:`<p>L'intelligence artificielle s'impose aujourd'hui comme une révolution majeure dans le domaine de l'informatique.</p><h3>Une IA construite par l'informatique</h3><p>L'IA repose entièrement sur l'informatique : algorithmes, langages de programmation, bases de données et puissance de calcul.</p><blockquote>"L'IA ne remplace pas l'informatique, elle en est une extension avancée."</blockquote><h3>Vers une transformation plutôt qu'un remplacement</h3><p>L'avenir sera une collaboration entre l'homme et la machine, pas une opposition.</p>`},
+      { id:1, cat:"réalité", title:"Les clichés sur l'informatique dans la société congolaise", excerpt:"Derrière les préjugés sur l'informatique au Congo se cache une réalité numérique en pleine transformation.", img:"images/cliche-informatique.png", date:"25 avr. 2025", read:"6 min", tags:["#réalité","#brazzaville"],
+        body:`<p>Dans beaucoup de familles au Congo, lorsqu'un jeune annonce qu'il étudie l'informatique : « Ah donc tu vas réparer les téléphones ? »</p><h3>Une vision héritée d'une autre époque</h3><p>Les cybercafés représentaient longtemps le principal accès à Internet.</p><h3>Les jeunes Congolais changent les mentalités</h3><p>De nombreux jeunes apprennent le développement web, la programmation et la cybersécurité.</p>`},
+      { id:2, cat:"Science", title:"La Science en Afrique et dans le monde : entre héritage, défis et révolution", excerpt:"La science façonne le monde moderne, mais son développement reste inégal entre l'Afrique et les grandes puissances.", img:"images/science.jpg", date:"18 avr. 2025", read:"9 min", tags:["#Conscience","#Science"], video:"https://www.youtube.com/embed/lyu7v7nWzfo",
+        body:`<p>La science est aujourd'hui l'un des moteurs les plus puissants du développement humain.</p><h3>La science dans le monde</h3><p>Dominée par les États-Unis, la Chine, le Japon et l'Europe.</p><h3>La science en Afrique</h3><p>Potentiel énorme mais encore sous-exploité. Fuite des cerveaux, manque de financement.</p><h3>Vers une science plus inclusive</h3><p>Des partenariats internationaux permettent de renforcer la présence africaine.</p>`},
+      { id:3, cat:"Dévélopement", title:"La confiance en soi chez les étudiants : ce combat silencieux", excerpt:"Derrière les sourires, nombreux sont les étudiants qui doutent d'eux-mêmes.", img:"images/confience.png", date:"10 avr. 2025", read:"5 min", tags:["#confience","#Mindset"],
+        body:`<p>Dans les universités au Congo, beaucoup d'étudiants vivent une bataille silencieuse : le manque de confiance en soi.</p><h3>La pression de réussir</h3><p>Les familles attendent de bonnes notes, un diplôme rapide. Cette pression peut devenir très lourde.</p><h3>La confiance se construit</h3><p>Elle se développe quand on apprend chaque jour et qu'on ose essayer.</p>`},
+      { id:8, cat:"Société", title:"La religion au Congo : entre traditions, christianisme et vie étudiante", excerpt:"Au Congo, la religion influence profondément la société et la vie des étudiants.", img:"images/religion.jpg", date:"12 avr. 2025", read:"12 min", tags:["#Congo","#Religion","#Étudiants","#Prière"],
+        body:`<p>Au Congo, la religion est une réalité sociale, culturelle et émotionnelle qui traverse toutes les générations.</p><h3>Un christianisme dominant</h3><p>La République du Congo est majoritairement chrétienne.</p><h3>Les étudiants et la prière</h3><p>Face aux défis académiques, beaucoup se tournent vers la prière comme soutien moral.</p>`}
+    ];
+
+    const catMap = {
+      'tech': 'Technologie',
+      'real': 'réalité',
+      'sci': 'Science',
+      'soc': 'Société',
+      'dev': 'Dévélopement'
+    };
+
+    function renderGrid(gridId, articles) {
+      const grid = document.getElementById(gridId);
+      if (!articles.length) { grid.innerHTML = '<div class="col-12 text-muted text-center py-3">Aucun article dans cette catégorie.</div>'; return; }
+      grid.innerHTML = articles.map(a => `
+        <div class="col-md-6 col-lg-4">
+          <div class="blog-card" onclick="openArticle(${a.id})">
+            <img src="${a.img}" alt="${a.title}"/>
+            <div class="card-body">
+              <div class="card-category"><i class="bi bi-tag me-1"></i>${a.cat}</div>
+              <div class="card-title">${a.title}</div>
+              <div class="card-excerpt">${a.excerpt}</div>
+              <div class="d-flex flex-wrap mt-2">${a.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+              <div class="card-meta mt-2"><i class="bi bi-calendar3 me-1"></i>${a.date}<span class="ms-3"><i class="bi bi-clock me-1"></i>${a.read}</span></div>
+              <button class="read-btn">Lire <i class="bi bi-arrow-right ms-1"></i></button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function initGrids() {
+      renderGrid('grid-tech', ARTICLES.filter(a => a.cat === 'Technologie'));
+      renderGrid('grid-real', ARTICLES.filter(a => a.cat === 'réalité'));
+      renderGrid('grid-sci',  ARTICLES.filter(a => a.cat === 'Science'));
+      renderGrid('grid-soc',  ARTICLES.filter(a => a.cat === 'Société'));
+      renderGrid('grid-dev',  ARTICLES.filter(a => a.cat === 'Dévélopement'));
+    }
+
+    function scrollToCat(key, el) {
+      if (el) {
+        document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+      }
+      document.getElementById('sec-' + key).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showAll(el) {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function doSearch() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      if (!q) { initGrids(); return; }
+      ['tech','real','sci','soc','dev'].forEach(key => {
+        const cat = catMap[key];
+        const filtered = ARTICLES.filter(a => a.cat === cat && (a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q) || a.tags.join(' ').toLowerCase().includes(q)));
+        renderGrid('grid-' + key, filtered);
+      });
+    }
+
+    function openArticle(id) {
+      const a = ARTICLES.find(x => x.id === id);
+      if (!a) return;
+      const vid = a.video ? `<h3>📽 Vidéo associée</h3><div class="video-wrap"><iframe src="${a.video}" allowfullscreen loading="lazy"></iframe></div>` : '';
+      document.getElementById("articleContent").innerHTML = `
+        <img class="article-hero" src="${a.img}" alt="${a.title}"/>
+        <div style="color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;margin-bottom:.5rem;"><i class="bi bi-tag me-1"></i>${a.cat}</div>
+        <h1 class="article-title">${a.title}</h1>
+        <div class="article-meta"><i class="bi bi-calendar3 me-1"></i>${a.date} • <i class="bi bi-clock me-1"></i>${a.read} de lecture</div>
+        <div class="article-body">${a.body}${vid}<p style="margin-top:1.5rem">Merci d'avoir lu cet article. Si ces réflexions vous ont touché, n'hésitez pas à le partager.</p></div>`;
+      document.getElementById("articleTags").innerHTML = a.tags.map(t=>`<span class="tag me-1">${t}</span>`).join('');
+      const related = ARTICLES.filter(x => x.id !== id).slice(0, 3);
+      document.getElementById("relatedArticles").innerHTML = related.map(r=>`<div class="pop-article" onclick="openArticle(${r.id})"><img src="${r.img}" alt=""/><div><div class="pop-article-title">${r.title}</div><div class="pop-article-date">${r.date}</div></div></div>`).join('');
+      document.getElementById("homeView").style.display = "none";
+      document.getElementById("articleView").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showCategories() {
+      document.getElementById("homeView").style.display = "block";
+      document.getElementById("articleView").style.display = "none";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initGrids();
+  </script>
+</body>
+</html>
